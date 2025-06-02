@@ -8,6 +8,7 @@ from .file_dat import DatFile
 from .file_txt import TxtFile
 from .file_json import JSONFile
 from .file_yaml import YAMLFile
+
 from lunapyutils import *
 import sys, os
 from pathlib import Path
@@ -37,20 +38,22 @@ class FileHandler:
         """
         Creates a FileHandler instance.
 
-        Provide an absolute `pathlib.Path` path for the file. 
+        Provide an absolute `pathlib.Path` path for the file. If the file does
+        not exist, it will be created.
 
         Parameters
         ----------
         file_path : pathlib.Path
             the absolute path of the file to be managed, including extension
+
+        Raises
+        ------
+        ValueError
+            if the file does not have a FileExtension subclass to handle it
         """
 
         self.path = file_path
-        try:
-            self.extension = self._determine_file_extension_object(self.path)
-        except KeyError as e:
-            print_internal(text = str(e), display_error_notice = True)
-            return
+        self.extension = self._determine_file_extension_object()
             
         if not self.file_exists():
             if self.create_file():
@@ -73,23 +76,36 @@ class FileHandler:
         filename.      
         """
         return cls(
-            full_path = Path(SCRIPT_ROOT, directory, filename)
+            file_path = Path(SCRIPT_ROOT, directory, filename)
         )
 
 
     def _determine_file_extension_object(self) -> FileExtension:
+        """
+        Determines the appropriate FileExtension subclass to use for this file.
+
+        Returns
+        -------
+        FileHandler
+            the appropriate FileExtension subclass for this FileHandler's file
+        
+        Raises
+        ------
+        ValueError
+            if the file does not have a FileExtension subclass to handle it
+        """
         match self.path.suffix:
             case '.txt'  : return TxtFile
             case '.yaml' : return YAMLFile
             case '.json' : return JSONFile
             case '.dat'  : return DatFile
-            case _: raise KeyError('No FileHandler for given extension')
+            case _: raise ValueError('No FileHandler for given extension')
 
 
     @staticmethod
     def create_dir(dir_path : str) -> bool: 
         """
-        Create directory from the root of the script.
+        Create directory at the root of the script.
 
         Parameters
         ----------
@@ -99,8 +115,7 @@ class FileHandler:
         Returns
         -------
         bool
-            True,  if directory was created successfully or if \
-                   directory already exists |
+            True,  if the directory was created successfully or already exists |
             False, otherwise
         """
 
@@ -122,7 +137,7 @@ class FileHandler:
 
     def create_file(self) -> bool:
         """
-        Creates file at path specified in attribute.
+        Creates file at path specified in the `path` attribute.
 
         Returns
         -------
@@ -137,7 +152,7 @@ class FileHandler:
                 file_created_successfully = True
 
         except FileNotFoundError as e:
-            if not FileHandler.create_dir(os.path.dirname(self.path)):
+            if not FileHandler.create_dir(self.path.parent):
                 return False
 
             return self.create_file()
@@ -163,8 +178,7 @@ class FileHandler:
             True,  if file exists |
             False, otherwise
         """
-
-        return os.path.isfile(self.path)
+        return self.path.exists()
     
 
     def is_empty(self) -> bool:
@@ -178,7 +192,7 @@ class FileHandler:
             False, otherwise
         """
 
-        return os.stat(self.path).st_size == 0
+        return self.path.stat().st_size == 0
     
 
     def read(self) -> Any | None:
@@ -215,4 +229,7 @@ class FileHandler:
     
     
     def print(self) -> None:
+        """
+        Prints the data held in the file to standard out.
+        """
         self.extension.print()

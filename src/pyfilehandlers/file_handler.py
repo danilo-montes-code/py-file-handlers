@@ -4,6 +4,10 @@ Contains class that handles a single file.
 """
 
 from .file_extension import FileExtension
+from .file_dat import DatFile
+from .file_txt import TxtFile
+from .file_json import JSONFile
+from .file_yaml import YAMLFile
 from lunapyutils import *
 import sys, os
 from pathlib import Path
@@ -12,7 +16,7 @@ from typing import Any
 
 
 
-SCRIPT_ROOT = sys.path[0]
+SCRIPT_ROOT = Path.cwd()
 
 class FileHandler:
     """
@@ -20,55 +24,34 @@ class FileHandler:
 
     Attributes
     ----------
-    fn : str
-        filename of the desired file
+    path : pathlib.Path
+        absolute path of the file to be managed
     extension : FileExtension
         handles file IO based on extension type
-    
-    Methods
-    -------
-    @staticmethod
-    create_dir(path='data'):
-        creates directory from the root directory at given path
-    create_file():
-        creates file at the location of the fn attribute
-    file_exists():
-        determines if file already exists
-    is_empty():
-        determines if file is empty
-    read():
-        opens file and returns its data
-    write(data):
-        writes to file
-    print():
-        opens file and prints its data
     """
 
-    def __init__(self, 
-                 extension : FileExtension, 
-                 fn : str = None, 
-                 dir : str = 'data',
-                 full_path : str = None) -> None:
+    def __init__(
+        self, 
+        file_path : Path
+    ) -> None:
         """
-        Creates FileHandler instance.
+        Creates a FileHandler instance.
 
-        Always provide `extension`.
-        Either provide `fn` and optionally `dir`, or provide `full_path`.
+        Provide an absolute `pathlib.Path` path for the file. 
 
         Parameters
         ----------
-        extension : FileExtension
-            handles file IO based on extension type
-        fn : str, optional
-            filename of the desired file, including extension
-        dir : str, default='data'
-            directory to put files in
-        full_path : str, optional
-            entire path of the file to handle, including extension
+        file_path : pathlib.Path
+            the absolute path of the file to be managed, including extension
         """
 
-        self.path = full_path or os.path.join(SCRIPT_ROOT, dir, fn)
-        self.extention = extension(self.path)
+        self.path = file_path
+        try:
+            self.extension = self._determine_file_extension_object(self.path)
+        except KeyError as e:
+            print_internal(text = str(e), display_error_notice = True)
+            return
+            
         if not self.file_exists():
             if self.create_file():
                 print_internal(f'{self.path} created successfully')
@@ -76,13 +59,31 @@ class FileHandler:
                 print_internal(f'error creating file {self.path}')
 
 
-
     @classmethod
-    def exact_path(cls,
-                   full_path : str, 
-                   extension : FileExtension):
-        return cls(extension=extension, full_path=full_path)
+    def from_directory_and_filename(
+        cls,
+        filename : str, 
+        directory : str = 'data'
+    ) -> None:
+        """
+        Creates a FileHandler instance.
 
+        The file's path will start with the root of the script, and will
+        have an optional directory (defaulted to `data/`), as well as a
+        filename.      
+        """
+        return cls(
+            full_path = Path(SCRIPT_ROOT, directory, filename)
+        )
+
+
+    def _determine_file_extension_object(self) -> FileExtension:
+        match self.path.suffix:
+            case '.txt'  : return TxtFile
+            case '.yaml' : return YAMLFile
+            case '.json' : return JSONFile
+            case '.dat'  : return DatFile
+            case _: raise KeyError('No FileHandler for given extension')
 
 
     @staticmethod
@@ -191,7 +192,7 @@ class FileHandler:
             None, if file is empty
         """
 
-        return self.extention.read() if not self.is_empty() else None
+        return self.extension.read() if not self.is_empty() else None
     
 
     def write(self, data: Any) -> bool:
@@ -210,8 +211,8 @@ class FileHandler:
             False, otherwise
         """
 
-        return self.extention.write(data)
+        return self.extension.write(data)
     
     
     def print(self) -> None:
-        self.extention.print()
+        self.extension.print()

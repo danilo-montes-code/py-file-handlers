@@ -1,6 +1,6 @@
-"""file_dat_minecraft.py
+"""file_dat.py
 
-Contains a class that handles Minecraft dat file IO.
+Contains a class that handles dat file IO.
 """
 
 from .file_extension import FileExtension
@@ -11,7 +11,7 @@ from typing import Any
 
 
 
-class MinecraftDatFile(FileExtension):
+class DatFile(FileExtension):
     """
     Class that handles txt file IO.
 
@@ -32,7 +32,7 @@ class MinecraftDatFile(FileExtension):
 
     def __init__(self, fn: str) -> None:
         """
-        Creates MinecraftDatFile instance.
+        Creates DatFile instance.
 
         Attributes
         ----------
@@ -59,11 +59,11 @@ class MinecraftDatFile(FileExtension):
             data = amulet_nbt.load(self.fn)
 
         except IOError as e:
-            handle_error(e, 'MinecraftDatFile.open()',
+            handle_error(e, 'DatFile.open()',
                          'error opening file')
 
         except Exception as e:
-            handle_error(e, 'MinecraftDatFile.open()', 
+            handle_error(e, 'DatFile.open()', 
                          'erroneous error opening file')
 
         finally:
@@ -93,7 +93,7 @@ class MinecraftDatFile(FileExtension):
                 saved = True
         
         except Exception as e:
-            handle_error(e, 'MinecraftDatFile.write()', 'error writing to file')
+            handle_error(e, 'DatFile.write()', 'error writing to file')
 
         finally:
             return saved

@@ -5,6 +5,7 @@ Class is written as an abstract class.
 """
 
 from abc import ABC, abstractmethod
+from pathlib import Path
 
 from typing import Any
 
@@ -16,34 +17,30 @@ class FileExtension(ABC):
     
     Attributes
     ----------
-    fn : str
-        filename of the file
+    path : pathlib.Path
+        absolute path of the file to be managed
     extension_suffix : str
         the suffix of the file extension
-
-    Methods
-    -------
-    open():
-        opens the file and returns its data
-    write(data):
-        writes data to file
     """
 
-    def __init__(self, fn : str, extension_suffix : str) -> None:
+    def __init__(
+        self, 
+        path : Path, 
+        extension_suffix : str
+    ) -> None:
         """
         Creates FileExtension instance.
 
         Parameters
         ----------
-        fn : str
-            filename of the desired file
+        path : pathlib.Path
+            absolute path of the file to be managed
         extension_suffix : str
             the suffix of the file extension
         """
         
-        self.fn = fn
+        self.path = path
         self.extension_suffix = extension_suffix
-    
     
     
     @abstractmethod
@@ -60,6 +57,7 @@ class FileExtension(ABC):
         Writes to the file.
         """
         pass
+
 
     @abstractmethod
     def print(self) -> None:

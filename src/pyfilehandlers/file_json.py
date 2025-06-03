@@ -6,6 +6,7 @@ Contains a class that handles JSON file IO.
 from .file_extension import FileExtension
 from lunapyutils import *
 import json
+from pathlib import Path
 
 from typing import Any
 
@@ -17,46 +18,37 @@ class JSONFile(FileExtension):
 
     Attributes
     ----------
-    fn : str
-        filename of the file
-    
-    Methods
-    -------
-    read():
-        opens the file and returns its data
-    write(data):
-        writes data to file
-    print():
-        opens the file and prints the data
+    path : pathlib.Path
+        absolute path of the file to be managed
     """
 
-    def __init__(self, fn: str) -> None:
+    def __init__(self, path : Path) -> None:
         """
         Creates JSONFile instance.
 
         Attributes
         ----------
-        fn : str
-            filename of the desired file
+        path : pathlib.Path
+            absolute path of the file to be managed
         """
 
-        super().__init__(fn = fn, extension_suffix = '.json')
+        super().__init__(path = path, extension_suffix = '.json')
 
 
-    def read(self) -> Any | None:
+    def read(self) -> dict | None:
         """
         Opens JSON file and returns its data.
 
         Returns
         -------
-        Any
+        dict
             the data contained in the file | 
             None is there was an error
         """
 
         data = None
         try:
-            with open(self.fn, 'r') as f:
+            with open(self.path, 'r') as f:
                 data = json.load(f)
 
         except IOError as e:
@@ -71,13 +63,13 @@ class JSONFile(FileExtension):
             return data
         
 
-    def write(self, data : Any) -> bool:
+    def write(self, data : dict) -> bool:
         """
         Writes data to JSON file.
 
         Parameters
         ----------
-        data : Any
+        data : dict
             the data to write to the file
 
         Returns
@@ -89,7 +81,7 @@ class JSONFile(FileExtension):
 
         saved = False
         try: 
-            with open(self.fn, 'w') as f:
+            with open(self.path, 'w') as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
                 saved = True
         

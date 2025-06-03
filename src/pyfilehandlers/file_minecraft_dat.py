@@ -1,19 +1,21 @@
-"""file_txt.py
+"""file_minecraft_dat.py
 
-Contains a class that handles txt file IO.
+Contains a class that handles Minecraft dat file IO.
 """
 
 from .file_extension import FileExtension
 from lunapyutils import *
+import amulet_nbt
 from pathlib import Path
 
 from typing import Any
+from amulet_nbt import NamedTag
 
 
 
-class TxtFile(FileExtension):
+class MinecraftDatFile(FileExtension):
     """
-    Class that handles txt file IO.
+    Class that handles Minecraft dat file IO.
 
     Attributes
     ----------
@@ -23,7 +25,7 @@ class TxtFile(FileExtension):
 
     def __init__(self, path: Path) -> None:
         """
-        Creates TxtFile instance.
+        Creates MinecraftDatFile instance.
 
         Attributes
         ----------
@@ -31,44 +33,43 @@ class TxtFile(FileExtension):
             absolute path of the file to be managed
         """
 
-        super().__init__(path = path, extension_suffix = '.txt')
+        super().__init__(path = path, extension_suffix = '.dat')
 
 
-    def read(self) -> list[str] | None:
+    def read(self) -> NamedTag | None:
         """
-        Opens txt file and returns its data.
+        Opens Minecraft dat file and returns its data.
 
         Returns
         -------
-        list[str]
+        amulet_nbt.NamedTag
             the data contained in the file | 
             None is there was an error
         """
 
         data = None
         try:
-            with open(self.path, 'r') as f:
-                data = f.readlines()
+            data : NamedTag = amulet_nbt.load(self.path)
 
         except IOError as e:
-            handle_error(e, 'TxtFile.open()',
+            handle_error(e, 'MinecraftDatFile.open()',
                          'error opening file')
 
         except Exception as e:
-            handle_error(e, 'TxtFile.open()', 
+            handle_error(e, 'MinecraftDatFile.open()', 
                          'erroneous error opening file')
 
         finally:
             return data
         
 
-    def write(self, data: list[str]) -> bool:
+    def write(self, data: NamedTag) -> bool:
         """
-        Writes data to txt file. Overwrites all data held in file.
+        Writes data to Minecraft dat file. Overwrites all data held in file.
 
         Parameters
         ----------
-        data : list[str]
+        data : amulet_nbt.NamedTag
             the data to write to the file
 
         Returns
@@ -80,12 +81,11 @@ class TxtFile(FileExtension):
 
         saved = False
         try: 
-            with open(self.path, 'w') as f:
-                f.writelines(line + '\n' for line in data)
-                saved = True
+            data.save_to(self.path)
+            saved = True
         
         except Exception as e:
-            handle_error(e, 'TxtFile.write()', 'error writing to file')
+            handle_error(e, 'MinecraftDatFile.write()', 'error writing to file')
 
         finally:
             return saved
@@ -93,7 +93,7 @@ class TxtFile(FileExtension):
     
     def print(self) -> None:
         """
-        Opens the text file and prints the data.
+        Opens the Minecraft dat file and prints the data.
         """
         
         data = self.read()

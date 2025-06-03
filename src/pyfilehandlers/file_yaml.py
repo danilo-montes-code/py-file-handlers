@@ -1,11 +1,12 @@
 """file_yaml.py
 
-Contains a class that handles  YAML file IO.
+Contains a class that handles YAML file IO.
 """
 
 from .file_extension import FileExtension
 from lunapyutils import *
 from ruamel.yaml import YAML
+from pathlib import Path
 
 from typing import Any
 
@@ -17,30 +18,21 @@ class YAMLFile(FileExtension):
 
     Attributes
     ----------
-    fn : str
-        filename of the file
-    
-    Methods
-    -------
-    read():
-        opens the file and returns its data
-    write(data):
-        writes data to file
-    print():
-        opens the file and prints the data
+    path : pathlib.Path
+        absolute path of the file to be managed
     """
 
-    def __init__(self, fn: str) -> None:
+    def __init__(self, path: Path) -> None:
         """
         Creates YAMLFile instance.
 
         Attributes
         ----------
-        fn : str
-            filename of the desired file
+        path : pathlib.Path
+            absolute path of the file to be managed
         """
 
-        super().__init__(fn = fn, extension_suffix = '.yaml')
+        super().__init__(path = path, extension_suffix = '.yaml')
 
 
     def read(self) -> dict | None:
@@ -56,7 +48,7 @@ class YAMLFile(FileExtension):
 
         data = None
         try:
-            with open(self.fn, 'r') as f:
+            with open(self.path, 'r') as f:
                 yaml = YAML(typ='safe')
                 data = yaml.load(f)
 
@@ -90,7 +82,7 @@ class YAMLFile(FileExtension):
 
         saved = False
         try: 
-            with open(self.fn, 'w') as f:
+            with open(self.path, 'w') as f:
                 yaml = YAML()
                 yaml.dump(data, f)
                 saved = True

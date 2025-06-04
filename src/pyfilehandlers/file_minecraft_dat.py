@@ -3,7 +3,7 @@
 Contains a class that handles Minecraft dat file IO.
 """
 
-from .file_extension import FileExtension
+from .file_dat import DatFile
 from lunapyutils import *
 import amulet_nbt
 from pathlib import Path
@@ -13,7 +13,7 @@ from amulet_nbt import NamedTag
 
 
 
-class MinecraftDatFile(FileExtension):
+class MinecraftDatFile(DatFile):
     """
     Class that handles Minecraft dat file IO.
 

@@ -12,7 +12,7 @@ from amulet_nbt import NamedTag
 
 
 
-class MinecraftDatFile(DatFile):
+class DatFile(DatFile):
     """
     Class that handles Minecraft dat file IO.
 

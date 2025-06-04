@@ -4,7 +4,7 @@ Contains class that handles a single file.
 """
 
 from .file_extension import FileExtension
-from .file_minecraft_dat import MinecraftDatFile
+from .file_dat import DatFile
 from .file_txt import TxtFile
 from .file_json import JSONFile
 from .file_yaml import YAMLFile
@@ -97,8 +97,8 @@ class FileHandler:
             case '.txt'  : return TxtFile
             case '.yaml' : return YAMLFile
             case '.json' : return JSONFile
-            case '.dat'  : return MinecraftDatFile
-            case _: raise ValueError('No FileHandler for given extension')
+            case '.dat'  : return DatFile
+            case _: raise ValueError('No FileExtension for given extension')
 
 
     @staticmethod

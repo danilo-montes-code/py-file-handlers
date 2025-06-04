@@ -1,6 +1,6 @@
 [project]
 name = "pyfilehandlers"
-version = "0.0.2"
+version = "0.0.3"
 authors = [
   { name="Danilo Montes", email="danilo.montes101@gmail.com" },
 ]

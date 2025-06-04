@@ -8,7 +8,6 @@ from lunapyutils import *
 import amulet_nbt
 from pathlib import Path
 
-from typing import Any
 from amulet_nbt import NamedTag
 
 

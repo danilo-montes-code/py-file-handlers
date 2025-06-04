@@ -7,8 +7,6 @@ from .file_extension import FileExtension
 from lunapyutils import *
 from pathlib import Path
 
-from typing import Any
-
 
 
 class TxtFile(FileExtension):

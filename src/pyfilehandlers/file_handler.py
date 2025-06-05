@@ -9,7 +9,7 @@ from .file_txt import TxtFile
 from .file_json import JSONFile
 from .file_yaml import YAMLFile
 
-from lunapyutils import *
+from lunapyutils import handle_error, print_internal
 from pathlib import Path
 
 from typing import Any
@@ -151,7 +151,7 @@ class FileHandler:
             with open(self.path, 'a+'):
                 file_created_successfully = True
 
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             if not FileHandler.create_dir(self.path.parent):
                 return False
 

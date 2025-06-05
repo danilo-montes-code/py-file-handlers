@@ -4,7 +4,7 @@ Contains a class that handles Minecraft dat file IO.
 """
 
 from .file_dat import DatFile
-from lunapyutils import *
+from lunapyutils import handle_error
 import amulet_nbt
 from pathlib import Path
 

@@ -4,7 +4,7 @@ Contains a class that handles JSON file IO.
 """
 
 from .file_extension import FileExtension
-from lunapyutils import *
+from lunapyutils import handle_error
 import json
 from pathlib import Path
 

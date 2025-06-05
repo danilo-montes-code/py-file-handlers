@@ -60,13 +60,13 @@ class TxtFile(FileExtension):
             return data
         
 
-    def write(self, data: list[str]) -> bool:
+    def write(self, data: list[str] | str) -> bool:
         """
         Writes data to txt file. Overwrites all data held in file.
 
         Parameters
         ----------
-        data : list[str]
+        data : list[str] | str
             the data to write to the file
 
         Returns
@@ -79,7 +79,10 @@ class TxtFile(FileExtension):
         saved = False
         try: 
             with open(self.path, 'w') as f:
-                f.writelines(line + '\n' for line in data)
+                if isinstance(data, list):
+                    f.writelines(line + '\n' for line in data)
+                else:
+                    f.write(data)
                 saved = True
         
         except Exception as e:

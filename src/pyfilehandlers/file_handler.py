@@ -52,8 +52,8 @@ class FileHandler:
             if the file does not have a FileExtension subclass to handle it
         """
 
-        self.path = file_path if file_path.is_absolute() else file_path.resolve()
-        self.extension = self._determine_file_extension_object()
+        self.path : Path = file_path if file_path.is_absolute() else file_path.resolve(strict=True)
+        self.extension : FileExtension = self._determine_file_extension_object()(self.path)
             
         if not self.file_exists():
             if self.create_file():
@@ -224,8 +224,7 @@ class FileHandler:
             True,  if the data was written to the file successfully |
             False, otherwise
         """
-
-        return self.extension.write(data)
+        return self.extension.write(data=data)
     
     
     def print(self) -> None:

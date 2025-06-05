@@ -4,7 +4,7 @@ Contains a class that handles YAML file IO.
 """
 
 from .file_extension import FileExtension
-from lunapyutils import *
+from lunapyutils import handle_error
 from ruamel.yaml import YAML
 from pathlib import Path
 

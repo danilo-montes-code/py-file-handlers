@@ -37,13 +37,14 @@ class FileHandler:
         """
         Creates a FileHandler instance.
 
-        Provide an absolute `pathlib.Path` path for the file. If the file does
-        not exist, it will be created.
+        Either provide a relative or absolute `pathlib.Path` path for the file. 
+        Relative paths with be rooted at the current working directory where
+        the script was run. If the file does not exist, it will be created.
 
         Parameters
         ----------
         file_path : pathlib.Path
-            the absolute path of the file to be managed, including extension
+            the relative or absolute path of the file to be managed, including extension
 
         Raises
         ------
@@ -51,7 +52,7 @@ class FileHandler:
             if the file does not have a FileExtension subclass to handle it
         """
 
-        self.path = file_path
+        self.path = file_path if file_path.is_absolute() else file_path.resolve()
         self.extension = self._determine_file_extension_object()
             
         if not self.file_exists():

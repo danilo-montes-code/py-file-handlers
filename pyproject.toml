@@ -8,7 +8,7 @@ description = "A package of file handlers for use in Python"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-  "'ruamel.yaml'",
+  "ruamel.yaml",
   "amulet-nbt",
   "lunapyutils"
 ]
@@ -19,10 +19,10 @@ classifiers = [
 license = "MIT"
 license-files = ["LICEN[CS]E*"]
 
+
 [project.urls]
 Homepage = "https://github.com/danilo-montes-code/py-file-handlers"
 Issues = "https://github.com/danilo-montes-code/py-file-handlers/issues"
-
 
 
 [build-system]

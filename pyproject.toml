@@ -1,6 +1,6 @@
 [project]
 name = "pyfilehandlers"
-version = "0.1.2"
+version = "0.1.3"
 description = "A package of file handlers for use in Python"
 readme = "README.md"
 authors = [

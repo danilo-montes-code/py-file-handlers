@@ -224,7 +224,7 @@ class FileHandler:
             True,  if the data was written to the file successfully |
             False, otherwise
         """
-        return self.extension.write(data=data)
+        return self.extension.write(data)
     
     
     def print(self) -> None:

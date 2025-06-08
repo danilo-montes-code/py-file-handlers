@@ -3,7 +3,6 @@ from src.pyfilehandlers.file_txt import TxtFile
 from src.pyfilehandlers.file_json import JSONFile
 
 from pathlib import Path
-import shutil
 import pytest
 
 
@@ -40,5 +39,5 @@ class TestFileHandler:
         Path.unlink(path_to_test)
 
     def test__determine_file_extension_object_no_ext_handler(self):
-        with pytest.raises(ValueError) as e_info:
-            fh = FileHandler(Path('test.sh'))
+        with pytest.raises(ValueError):
+            FileHandler(Path('test.sh'))

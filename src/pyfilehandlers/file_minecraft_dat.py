@@ -48,7 +48,7 @@ class MinecraftDatFile(DatFile):
 
         data = None
         try:
-            data : NamedTag = amulet_nbt.load(self.path)
+            data : NamedTag = amulet_nbt.load(str(self.path))
 
         except IOError as e:
             handle_error(e, 'MinecraftDatFile.open()',
@@ -80,7 +80,7 @@ class MinecraftDatFile(DatFile):
 
         saved = False
         try: 
-            data.save_to(self.path)
+            data.save_to(str(self.path))
             saved = True
         
         except Exception as e:

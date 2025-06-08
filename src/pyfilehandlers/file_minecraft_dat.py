@@ -12,7 +12,7 @@ from amulet_nbt import NamedTag
 
 
 
-class DatFile(DatFile):
+class MinecraftDatFile(DatFile):
     """
     Class that handles Minecraft dat file IO.
 
@@ -32,7 +32,7 @@ class DatFile(DatFile):
             absolute path of the file to be managed
         """
 
-        super().__init__(path = path, extension_suffix = '.dat')
+        super().__init__(path = path)
 
 
     def read(self) -> NamedTag | None:

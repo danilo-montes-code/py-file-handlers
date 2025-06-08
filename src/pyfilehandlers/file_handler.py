@@ -52,7 +52,7 @@ class FileHandler:
             if the file does not have a FileExtension subclass to handle it
         """
 
-        self.path : Path = file_path if file_path.is_absolute() else file_path.resolve(strict=True)
+        self.path : Path = self._resolve_path(file_path)
         self.extension : FileExtension = self._determine_file_extension_object()(self.path)
             
         if not self.file_exists():
@@ -73,7 +73,14 @@ class FileHandler:
 
         The file's path will start with the root of the script, and will
         have an optional directory (defaulted to `data/`), as well as a
-        filename.      
+        filename.
+
+        Parameters
+        ----------
+        filename : str
+            the name of the file, including extension
+        directory, default = 'data'
+            the name of the directory to put the file in
         """
         return cls(
             file_path = Path(SCRIPT_ROOT, directory, filename)
@@ -100,6 +107,27 @@ class FileHandler:
             case '.json' : return JSONFile
             case '.dat'  : return DatFile
             case _: raise ValueError('No FileExtension for given extension')
+
+    
+    def _resolve_path(self, given_path : Path) -> Path:
+        """
+        Returns an absolute path to a file.
+        
+        Parameters
+        ----------
+        given_path : pathlib.Path
+            the absolute or relative path of the file
+        
+        Returns
+        -------
+        pathlib.Path
+            the absolute path of the file
+        """
+
+        if given_path.is_absolute():
+            return given_path
+        
+        return given_path.resolve()
 
 
     @staticmethod
@@ -204,9 +232,23 @@ class FileHandler:
         Any
             the data held in the file | 
             None, if file is empty
+
+        Raises
+        ------
+        PermissionError
+            if process does not have the permission to read from the file
         """
 
-        return self.extension.read() if not self.is_empty() else None
+        try:
+            open(self.path, mode='r')
+        
+        except PermissionError:
+            raise PermissionError(f'Lacking permissions to read from file {self.path}')
+
+        else:
+            if self.is_empty():
+                return None
+            return self.extension.read()
     
 
     def write(self, data: Any) -> bool:
@@ -223,12 +265,34 @@ class FileHandler:
         bool
             True,  if the data was written to the file successfully |
             False, otherwise
+
+        Raises
+        ------
+        PermissionError
+            if process does not have the permission to write to the file
         """
-        return self.extension.write(data)
+
+        try:
+            open(self.path, mode='w')
+
+        except PermissionError:
+            raise PermissionError(f'Lacking permissions to write to file {self.path}')
+        
+        else:
+            return self.extension.write(data)
     
     
     def print(self) -> None:
         """
         Prints the data held in the file to standard out.
+
+        Raises
+        ------
+        PermissionError
+            if process does not have the permission to read from the file
         """
-        self.extension.print()
+        try:
+            self.extension.print()
+            
+        except PermissionError:
+            raise PermissionError(f'Lacking permissions to read from file {self.path}')

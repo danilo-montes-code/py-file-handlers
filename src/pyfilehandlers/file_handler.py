@@ -111,6 +111,24 @@ class FileHandler:
 
 
     def _determine_dat_file_subclass(self) -> DatFile:
+        """
+        Determins the appropriate DatFile subclass to use for this file.
+        
+        Returns
+        -------
+        DatFile
+            subclass that handles the specific format held in the dat file
+        
+        Raises
+        -------
+        ValueError
+            if the subclass of DatFile can not be determined, or if there
+            is no existing subclass of DatFile to handle the format
+        """
+
+        # only supports Minecraft dat files, if this is to be expanded,
+        # there will be some logic to figure out automatically if the
+        # given file is a Minecraft dat file or otherwise
         return MinecraftDatFile
 
     

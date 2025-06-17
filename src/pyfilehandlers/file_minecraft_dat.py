@@ -3,10 +3,13 @@
 Contains a class that handles Minecraft dat file IO.
 """
 
-from .file_dat import DatFile
-from lunapyutils import handle_error
-import amulet_nbt
 from pathlib import Path
+
+import amulet_nbt
+from lunapyutils import handle_error
+
+from .file_dat import DatFile
+
 
 from amulet_nbt import NamedTag
 
@@ -16,22 +19,24 @@ class MinecraftDatFile(DatFile):
     """
     Class that handles Minecraft dat file IO.
 
+    
     Attributes
     ----------
     path : pathlib.Path
-        absolute path of the file to be managed
+        Absolute path of the file to be managed.
     """
+
 
     def __init__(self, path: Path) -> None:
         """
-        Creates MinecraftDatFile instance.
+        Initializes MinecraftDatFile instance.
 
+        
         Attributes
         ----------
         path : pathlib.Path
-            absolute path of the file to be managed
+            Absolute path of the file to be managed.
         """
-
         super().__init__(path = path)
 
 
@@ -39,11 +44,12 @@ class MinecraftDatFile(DatFile):
         """
         Opens Minecraft dat file and returns its data.
 
+        
         Returns
         -------
         amulet_nbt.NamedTag
-            the data contained in the file | 
-            None is there was an error
+            The data contained in the file.
+            None, if there was an error.
         """
 
         data = None
@@ -66,16 +72,18 @@ class MinecraftDatFile(DatFile):
         """
         Writes data to Minecraft dat file. Overwrites all data held in file.
 
+        
         Parameters
         ----------
         data : amulet_nbt.NamedTag
-            the data to write to the file
+            The data to write to the file.
 
+            
         Returns
         -------
         bool
-            True,  if the data was written to the file |
-            False, otherwise
+            True,  if the data was written to the file.
+            False, otherwise.
         """
 
         saved = False

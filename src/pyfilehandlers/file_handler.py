@@ -3,6 +3,10 @@
 Contains class that handles a single file.
 """
 
+from pathlib import Path
+
+from lunapyutils import handle_error, print_internal
+
 from .file_extension import FileExtension
 from .file_dat import DatFile
 from .file_minecraft_dat import MinecraftDatFile
@@ -10,47 +14,52 @@ from .file_txt import TxtFile
 from .file_json import JSONFile
 from .file_yaml import YAMLFile
 
-from lunapyutils import handle_error, print_internal
-from pathlib import Path
 
 from typing import Any
 
 
-
 SCRIPT_ROOT = Path.cwd()
+
+
 
 class FileHandler:
     """
     A class that handles a single file's input and output.
 
+    
     Attributes
     ----------
     path : pathlib.Path
-        absolute path of the file to be managed
+        Absolute path of the file to be managed.
+
     extension : FileExtension
-        handles file IO based on extension type
+        Handles file IO based on extension type.
     """
+
 
     def __init__(
         self, 
         file_path : Path
     ) -> None:
         """
-        Creates a FileHandler instance.
+        Initializes a FileHandler instance.
 
         Either provide a relative or absolute `pathlib.Path` path for the file. 
         Relative paths with be rooted at the current working directory where
         the script was run. If the file does not exist, it will be created.
 
+        
         Parameters
         ----------
         file_path : pathlib.Path
-            the relative or absolute path of the file to be managed, including extension
+            The relative or absolute path of the file to be managed, 
+            including extension.
 
+            
         Raises
         ------
         ValueError
-            if the file does not have a FileExtension subclass to handle it
+            If the file does not have a FileExtension subclass to handle it.
         """
 
         self.path : Path = self._resolve_path(file_path)
@@ -70,18 +79,20 @@ class FileHandler:
         directory : str = 'data'
     ) -> None:
         """
-        Creates a FileHandler instance.
+        Initializes a FileHandler instance.
 
         The file's path will start with the root of the script, and will
-        have an optional directory (defaulted to `data/`), as well as a
+        have an optional directory (defaults to `data/`), as well as a
         filename.
 
+        
         Parameters
         ----------
         filename : str
-            the name of the file, including extension
-        directory, default = 'data'
-            the name of the directory to put the file in
+            The name of the file, including extension.
+
+        directory : str, default = 'data'
+            The name of the directory to put the file in.
         """
         return cls(
             file_path = Path(SCRIPT_ROOT, directory, filename)
@@ -92,16 +103,19 @@ class FileHandler:
         """
         Determines the appropriate FileExtension subclass to use for this file.
 
+        
         Returns
         -------
         FileHandler
-            the appropriate FileExtension subclass for this FileHandler's file
+            The appropriate FileExtension subclass for this FileHandler's file.
         
+            
         Raises
         ------
         ValueError
-            if the file does not have a FileExtension subclass to handle it
+            If the file does not have a FileExtension subclass to handle it.
         """
+
         match self.path.suffix:
             case '.txt'  : return TxtFile
             case '.yaml' : return YAMLFile
@@ -112,18 +126,20 @@ class FileHandler:
 
     def _determine_dat_file_subclass(self) -> DatFile:
         """
-        Determins the appropriate DatFile subclass to use for this file.
+        Determines the appropriate DatFile subclass to use for this file.
         
+
         Returns
         -------
         DatFile
-            subclass that handles the specific format held in the dat file
+            Subclass that handles the specific format held in the dat file.
         
+            
         Raises
         -------
         ValueError
-            if the subclass of DatFile can not be determined, or if there
-            is no existing subclass of DatFile to handle the format
+            If the subclass of `DatFile` can not be determined, or if there
+            is no existing subclass of `DatFile` to handle the format.
         """
 
         # only supports Minecraft dat files, if this is to be expanded,
@@ -136,15 +152,17 @@ class FileHandler:
         """
         Returns an absolute path to a file.
         
+
         Parameters
         ----------
         given_path : pathlib.Path
-            the absolute or relative path of the file
+            The absolute or relative path of the file.
         
+            
         Returns
         -------
         pathlib.Path
-            the absolute path of the file
+            The absolute path of the file.
         """
 
         if given_path.is_absolute():
@@ -156,18 +174,20 @@ class FileHandler:
     @staticmethod
     def create_dir(dir_path : str) -> bool: 
         """
-        Create directory at the root of the script.
+        Creates directory based at the root of the script.
 
+        
         Parameters
         ----------
         dir_path : str
-            path of the directory to be created
+            Path of the directory to be created.
+            
 
         Returns
         -------
         bool
-            True,  if the directory was created successfully or already exists |
-            False, otherwise
+            True,  if the directory was created successfully or already exists.
+            False, otherwise.
         """
 
         created = False
@@ -190,11 +210,12 @@ class FileHandler:
         """
         Creates file at path specified in the `path` attribute.
 
+        
         Returns
         -------
         bool
-            True,  if file was created successfully |
-            False, otherwise
+            True,  if file was created successfully.
+            False, otherwise.
         """
 
         file_created_successfully = False
@@ -223,11 +244,12 @@ class FileHandler:
         """
         Determines if file exists.
 
+        
         Returns
         -------
         bool
-            True,  if file exists |
-            False, otherwise
+            True,  if file exists.
+            False, otherwise.
         """
         return self.path.exists()
     
@@ -236,11 +258,12 @@ class FileHandler:
         """
         Determins if file is empty.
 
+        
         Returns
         -------
         bool
-            True,  if file is empty |
-            False, otherwise
+            True,  if file is empty.
+            False, otherwise.
         """
 
         return self.path.stat().st_size == 0
@@ -250,16 +273,17 @@ class FileHandler:
         """
         Opens file and returns its data.
 
+        
         Returns
         -------
         Any
-            the data held in the file | 
-            None, if file is empty
+            The data held in the file.
+            None, if file is empty.
 
         Raises
         ------
         PermissionError
-            if process does not have the permission to read from the file
+            If process does not have the permission to read from the file.
         """
 
         try:
@@ -278,21 +302,24 @@ class FileHandler:
         """
         Writes data to file.
 
+        
         Parameters
         ----------
         data : Any
-            data to write to the file
+            Data to write to the file.
+
         
         Returns
         -------
         bool
-            True,  if the data was written to the file successfully |
-            False, otherwise
+            True,  if the data was written to the file successfully.
+            False, otherwise.
+
 
         Raises
         ------
         PermissionError
-            if process does not have the permission to write to the file
+            If process does not have the permission to write to the file.
         """
 
         try:
@@ -309,11 +336,13 @@ class FileHandler:
         """
         Prints the data held in the file to standard out.
 
+        
         Raises
         ------
         PermissionError
-            if process does not have the permission to read from the file
+            If process does not have the permission to read from the file.
         """
+
         try:
             self.extension.print()
             

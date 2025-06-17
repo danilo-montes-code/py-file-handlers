@@ -7,6 +7,7 @@ Class is written as an abstract class.
 from abc import ABC, abstractmethod
 from pathlib import Path
 
+
 from typing import Any
 
 
@@ -15,13 +16,16 @@ class FileExtension(ABC):
     """
     A class that handles file IO for a specific file format.
     
+
     Attributes
     ----------
     path : pathlib.Path
-        absolute path of the file to be managed
+        Absolute path of the file to be managed.
+
     extension_suffix : str
-        the suffix of the file extension
+        The suffix of the file extension.
     """
+
 
     def __init__(
         self, 
@@ -29,14 +33,16 @@ class FileExtension(ABC):
         extension_suffix : str
     ) -> None:
         """
-        Creates FileExtension instance.
+        Initializes FileExtension instance.
 
+        
         Parameters
         ----------
         path : pathlib.Path
-            absolute path of the file to be managed
+            Absolute path of the file to be managed.
+
         extension_suffix : str
-            the suffix of the file extension
+            The suffix of the file extension.
         """
         
         self.path = path
@@ -68,4 +74,7 @@ class FileExtension(ABC):
 
 
     def get_extension_suffix(self) -> str:
+        """
+        Returns the suffix for this extention (ex. txt, yaml).
+        """
         return self.extension_suffix

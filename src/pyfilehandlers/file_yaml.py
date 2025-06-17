@@ -3,10 +3,13 @@
 Contains a class that handles YAML file IO.
 """
 
-from .file_extension import FileExtension
+from pathlib import Path
+
 from lunapyutils import handle_error
 from ruamel.yaml import YAML
-from pathlib import Path
+
+from .file_extension import FileExtension
+
 
 from typing import Any
 
@@ -16,22 +19,24 @@ class YAMLFile(FileExtension):
     """
     Class that handles YAML file IO.
 
+    
     Attributes
     ----------
     path : pathlib.Path
-        absolute path of the file to be managed
+        Absolute path of the file to be managed.
     """
+
 
     def __init__(self, path: Path) -> None:
         """
-        Creates YAMLFile instance.
+        Initializes YAMLFile instance.
 
+        
         Attributes
         ----------
         path : pathlib.Path
-            absolute path of the file to be managed
+            Absolute path of the file to be managed.
         """
-
         super().__init__(path = path, extension_suffix = '.yaml')
 
 
@@ -39,11 +44,12 @@ class YAMLFile(FileExtension):
         """
         Opens YAML file and returns its data.
 
+        
         Returns
         -------
         dict
-            the data contained in the file | 
-            None is there was an error
+            The data contained in the file.
+            None, if there was an error.
         """
 
         data = None
@@ -68,16 +74,18 @@ class YAMLFile(FileExtension):
         """
         Writes data to YAML file.
 
+        
         Parameters
         ----------
         data : dict[str, Any]
-            the data to write to the file
+            The data to write to the file.
 
+            
         Returns
         -------
         bool
-            True,  if the data was written to the file |
-            False, otherwise
+            True,  if the data was written to the file.
+            False, otherwise.
         """
 
         saved = False

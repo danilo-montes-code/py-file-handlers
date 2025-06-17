@@ -3,10 +3,12 @@
 Contains a class that handles JSON file IO.
 """
 
-from .file_extension import FileExtension
-from lunapyutils import handle_error
 import json
 from pathlib import Path
+
+from lunapyutils import handle_error
+
+from .file_extension import FileExtension
 
 
 
@@ -14,22 +16,24 @@ class JSONFile(FileExtension):
     """
     Class that handles JSON file IO.
 
+    
     Attributes
     ----------
     path : pathlib.Path
-        absolute path of the file to be managed
+        Absolute path of the file to be managed.
     """
+
 
     def __init__(self, path : Path) -> None:
         """
-        Creates JSONFile instance.
+        Initializes JSONFile instance.
 
+        
         Attributes
         ----------
         path : pathlib.Path
-            absolute path of the file to be managed
+            Absolute path of the file to be managed.
         """
-
         super().__init__(path = path, extension_suffix = '.json')
 
 
@@ -37,11 +41,12 @@ class JSONFile(FileExtension):
         """
         Opens JSON file and returns its data.
 
+        
         Returns
         -------
         dict
-            the data contained in the file | 
-            None is there was an error
+            The data contained in the file.
+            None, if there was an error.
         """
 
         data = None
@@ -65,16 +70,18 @@ class JSONFile(FileExtension):
         """
         Writes data to JSON file.
 
+        
         Parameters
         ----------
         data : dict
-            the data to write to the file
+            The data to write to the file.
 
+            
         Returns
         -------
         bool
-            True,  if the data was written to the file |
-            False, otherwise
+            True,  if the data was written to the file.
+            False, otherwise.
         """
 
         saved = False

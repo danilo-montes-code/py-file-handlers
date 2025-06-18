@@ -1,2 +1,2 @@
-# py-file-handlers
+# pyfilehandlers
 A package of file handlers for use in Python

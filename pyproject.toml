@@ -20,8 +20,8 @@ license = "MIT"
 license-files = ["LICEN[CS]E*"]
 
 [project.urls]
-Homepage = "https://github.com/danilo-montes-code/py-file-handlers"
-Issues = "https://github.com/danilo-montes-code/py-file-handlers/issues"
+Homepage = "https://github.com/danilo-montes-code/pyfilehandlers"
+Issues = "https://github.com/danilo-montes-code/pyfilehandlers/issues"
 
 [build-system]
 requires = ["hatchling"]

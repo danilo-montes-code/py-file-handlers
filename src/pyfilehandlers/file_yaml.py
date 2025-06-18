@@ -24,6 +24,8 @@ class YAMLFile(FileExtension):
     ----------
     path : pathlib.Path
         Absolute path of the file to be managed.
+    yaml : ruamel.yaml.YAML
+        YAML parser instance used for reading and writing YAML files.
     """
 
 
@@ -38,6 +40,7 @@ class YAMLFile(FileExtension):
             Absolute path of the file to be managed.
         """
         super().__init__(path = path, extension_suffix = '.yaml')
+        self.yaml = YAML(typ='safe')
 
 
     def read(self) -> dict | None:
@@ -55,8 +58,7 @@ class YAMLFile(FileExtension):
         data = None
         try:
             with open(self.path, 'r') as f:
-                yaml = YAML(typ='safe')
-                data = yaml.load(f)
+                data = self.yaml.load(f)
 
         except IOError as e:
             handle_error(e, 'YAMLFile.open()',
@@ -91,8 +93,7 @@ class YAMLFile(FileExtension):
         saved = False
         try: 
             with open(self.path, 'w') as f:
-                yaml = YAML()
-                yaml.dump(data, f)
+                self.yaml.dump(data, f)
                 saved = True
         
         except Exception as e:
@@ -100,12 +101,3 @@ class YAMLFile(FileExtension):
 
         finally:
             return saved
-        
-
-    def print(self) -> None:
-        """
-        Opens the yaml file and prints the data.
-        """
-
-        data = self.read()
-        print(data)

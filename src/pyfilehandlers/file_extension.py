@@ -65,12 +65,11 @@ class FileExtension(ABC):
         pass
 
 
-    @abstractmethod
     def print(self) -> None:
         """
         Opens the file and prints the data held within.
         """
-        pass
+        print(self.read())
 
 
     def get_extension_suffix(self) -> str:

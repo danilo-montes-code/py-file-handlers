@@ -96,12 +96,3 @@ class MinecraftDatFile(DatFile):
 
         finally:
             return saved
-        
-    
-    def print(self) -> None:
-        """
-        Opens the Minecraft dat file and prints the data.
-        """
-        
-        data = self.read()
-        print(data)

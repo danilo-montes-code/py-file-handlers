@@ -11,6 +11,9 @@ from lunapyutils import handle_error
 from .file_extension import FileExtension
 
 
+from typing import override
+
+
 
 class JSONFile(FileExtension):
     """
@@ -97,6 +100,7 @@ class JSONFile(FileExtension):
             return saved
         
 
+    @override
     def print(self) -> None:
         """
         Opens the json file and prints the data.
